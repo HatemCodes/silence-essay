@@ -1,0 +1,437 @@
+/* ---------------------------------------------------------------
+   The Guardrails They Sell Back To Us
+   Design notes:
+   - The page opens with emptiness above the title. That space is the
+     argument, not decoration. Don't fill it.
+   - One typeface (Newsreader). Weight, size and italic carry hierarchy.
+   - The three Jannah tiers are distinguished by RULE WEIGHT, not colour:
+     solid = established, dashed = contested, dotted = inference.
+     The structure encodes the confidence level.
+   - One accent colour, used only where something is interactive.
+   --------------------------------------------------------------- */
+
+:root {
+  --paper:      #E9EAE4;
+  --paper-deep: #E1E2DA;
+  --ink:        #14252A;
+  --ink-soft:   #55666A;
+  --ink-faint:  #8A9699;
+  --rule:       #C6C8BE;
+  --accent:     #7A5124;
+
+  --measure: 34rem;
+  --gutter: 1.6rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Newsreader", Georgia, "Times New Roman", serif;
+  font-size: 1.1875rem;
+  font-weight: 400;
+  line-height: 1.72;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.6rem 1rem;
+  z-index: 10;
+}
+.skip:focus { left: 0; }
+
+/* ---------- Opening ---------- */
+
+.opening {
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 var(--gutter) 14vh;
+}
+
+.opening-inner {
+  width: 100%;
+  max-width: var(--measure);
+  margin: 0 auto;
+  opacity: 0;
+  animation: settle 1.6s cubic-bezier(.22,.61,.36,1) .5s forwards;
+}
+
+@keyframes settle {
+  from { opacity: 0; transform: translateY(0.5rem); }
+  to   { opacity: 1; transform: none; }
+}
+
+.opening h1 {
+  margin: 0;
+  font-size: clamp(2.4rem, 8.2vw, 4.1rem);
+  font-weight: 500;
+  line-height: 1.03;
+  letter-spacing: -0.022em;
+  text-wrap: balance;
+}
+
+.standfirst {
+  margin: 1.4rem 0 0;
+  font-size: 1.1rem;
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 26rem;
+}
+
+.byline {
+  margin: 2.6rem 0 0;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--ink-faint);
+}
+
+.reading { font-style: italic; }
+
+/* ---------- Article ---------- */
+
+main { padding: 0 var(--gutter); }
+
+article {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding-bottom: 5rem;
+}
+
+article p {
+  margin: 0 0 1.35em;
+  hyphens: auto;
+}
+
+.lede {
+  font-size: 1.32rem;
+  line-height: 1.62;
+  font-weight: 300;
+  margin-bottom: 1.6em;
+}
+
+article em { font-style: italic; }
+
+article strong {
+  font-weight: 600;
+}
+
+/* Headings */
+
+article h2 {
+  margin: 3.6rem 0 1.4rem;
+  font-size: 1.85rem;
+  font-weight: 500;
+  line-height: 1.16;
+  letter-spacing: -0.014em;
+  text-wrap: balance;
+}
+
+.part {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0.01em;
+  color: var(--ink-faint);
+  margin-bottom: 0.5rem;
+}
+
+article h3 {
+  margin: 0 0 0.8rem;
+  font-size: 1.08rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+/* A breath between the opening frame and Part One */
+
+.pause {
+  border: 0;
+  height: 0;
+  margin: 3.2rem auto;
+  width: 2.5rem;
+  border-top: 1px solid var(--rule);
+}
+
+/* Pull quotes — the only place type gets loud mid-essay */
+
+.pull {
+  margin: 2.6rem 0;
+  padding: 0;
+  border: 0;
+}
+
+.pull p {
+  margin: 0;
+  font-size: 1.42rem;
+  line-height: 1.34;
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: -0.012em;
+  color: var(--ink);
+}
+
+/* Scholarly aside */
+
+.note {
+  margin: 2.4rem 0;
+  padding: 1.5rem 0 0.2rem;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 1.2rem;
+}
+
+.note h3 {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+
+.note p {
+  font-size: 1.02rem;
+  line-height: 1.66;
+  margin-bottom: 1.1em;
+}
+
+.note p:last-child { margin-bottom: 0; }
+
+/* Figures list */
+
+.figures {
+  margin: 1.6rem 0 1.8rem;
+  padding-left: 1.1rem;
+  list-style: none;
+}
+
+.figures li {
+  margin-bottom: 0.85em;
+  position: relative;
+}
+
+.figures li::before {
+  content: "";
+  position: absolute;
+  left: -1.1rem;
+  top: 0.82em;
+  width: 0.45rem;
+  height: 1px;
+  background: var(--ink-faint);
+}
+
+/* Confidence tiers — rule weight carries the meaning */
+
+.tier {
+  margin: 1.8rem 0;
+  padding: 0.2rem 0 0.2rem 1.4rem;
+}
+
+.tier-strong    { border-left: 3px solid var(--ink); }
+.tier-weak      { border-left: 2px dashed var(--ink-soft); }
+.tier-inference { border-left: 1px dotted var(--ink-faint); }
+
+.tier ul {
+  margin: 0;
+  padding-left: 1.05rem;
+}
+
+.tier li {
+  margin-bottom: 0.7em;
+  font-size: 1.02rem;
+  line-height: 1.62;
+}
+
+.tier li::marker { color: var(--ink-faint); }
+
+.tier-weak h3,
+.tier-inference h3 { color: var(--ink-soft); }
+
+.closing {
+  margin-top: 2.4rem;
+  font-size: 1.26rem;
+  line-height: 1.5;
+  font-weight: 300;
+  font-style: italic;
+}
+
+/* ---------- Respond ---------- */
+
+.respond {
+  background: var(--paper-deep);
+  margin: 0 calc(-1 * var(--gutter));
+  padding: 4.5rem var(--gutter) 4rem;
+  border-top: 1px solid var(--rule);
+}
+
+.respond h2 {
+  max-width: var(--measure);
+  margin: 0 auto 0.9rem;
+  font-size: 1.6rem;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+}
+
+.respond-intro {
+  max-width: var(--measure);
+  margin: 0 auto 2.2rem;
+  font-size: 1.04rem;
+  line-height: 1.62;
+  color: var(--ink-soft);
+}
+
+#feedback-form {
+  max-width: var(--measure);
+  margin: 0 auto;
+}
+
+.field { margin-bottom: 1.3rem; }
+
+.field label {
+  display: block;
+  font-size: 0.92rem;
+  margin-bottom: 0.4rem;
+  color: var(--ink-soft);
+}
+
+.opt {
+  font-style: italic;
+  color: var(--ink-faint);
+  font-size: 0.85rem;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  font-family: inherit;
+  font-size: 1.02rem;
+  line-height: 1.55;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 0.65rem 0.8rem;
+}
+
+.field textarea { resize: vertical; min-height: 8rem; }
+
+.field input:focus,
+.field textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: var(--accent);
+}
+
+.err {
+  margin: 0.4rem 0 0;
+  font-size: 0.9rem;
+  color: var(--accent);
+}
+
+#submit-btn {
+  font-family: inherit;
+  font-size: 1.02rem;
+  color: var(--paper);
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 2px;
+  padding: 0.6rem 1.8rem;
+  cursor: pointer;
+  transition: background 140ms ease;
+}
+
+#submit-btn:hover { background: #1E353B; }
+
+#submit-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+#submit-btn[disabled] {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.status {
+  margin: 1rem 0 0;
+  font-size: 0.98rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  min-height: 1.5em;
+}
+
+/* ---------- Footer ---------- */
+
+footer {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 3rem 0 4rem;
+}
+
+footer p {
+  margin: 0 0 0.8rem;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+
+.footnote {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--ink-faint);
+}
+
+/* ---------- Links ---------- */
+
+a {
+  color: var(--ink);
+  text-decoration-color: var(--accent);
+  text-underline-offset: 0.16em;
+  text-decoration-thickness: 1px;
+}
+
+a:hover { color: var(--accent); }
+
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- Narrow screens ---------- */
+
+@media (max-width: 34rem) {
+  body { font-size: 1.125rem; }
+  .opening { padding-bottom: 10vh; }
+  .lede { font-size: 1.2rem; }
+  .pull p { font-size: 1.2rem; }
+  article h2 { font-size: 1.55rem; margin-top: 3rem; }
+}
+
+/* ---------- Motion preference ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .opening-inner {
+    opacity: 1;
+    animation: none;
+  }
+  * { transition-duration: 0.01ms !important; }
+}
+
+/* ---------- Print ---------- */
+
+@media print {
+  .opening { min-height: auto; padding-top: 2rem; }
+  .respond { display: none; }
+  body { background: #fff; font-size: 11pt; }
+}
